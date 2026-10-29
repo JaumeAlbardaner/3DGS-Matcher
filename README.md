@@ -1,3 +1,11 @@
+# :construction: 3DGS-Matcher Maintainter note :construction:
+
+The template that was used for this website is: [https://github.com/eliahuhorwitz/Academic-project-page-template/tree/master](https://github.com/eliahuhorwitz/Academic-project-page-template/tree/master).
+
+We (the authors of 3DGS-Matcher) wish to give proper credit to their work.
+
+:construction: :construction:
+
 # Academic Project Page Template
 
 > **Update (September 2025)**: This template has been modernized with better design, SEO, and mobile support. For the original version, see the [original-version branch](https://github.com/eliahuhorwitz/Academic-project-page-template/tree/original-version).
