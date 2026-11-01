@@ -128,7 +128,7 @@ $(document).ready(function() {
 		loop: true,
 		infinite: true,
 		autoplay: true,
-		autoplaySpeed: 5000,
+		autoplaySpeed: 10500,   // one full pass of a 10.3 s clip
     }
 
 	// Initialize all div with carousel class
