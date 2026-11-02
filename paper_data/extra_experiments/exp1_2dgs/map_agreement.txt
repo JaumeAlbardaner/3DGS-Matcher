@@ -1,0 +1,4 @@
+3DGS: overlap pts 137,010/220,202  NN dist p50/p75/p90 (m) [0.409 0.726 1.176]
+      ground-height difference over 628 cells: median -0.226 m  IQR 1.122 m
+2DGS: overlap pts 124,840/238,409  NN dist p50/p75/p90 (m) [0.54  0.926 1.396]
+      ground-height difference over 448 cells: median -0.230 m  IQR 1.459 m

@@ -1,0 +1,237 @@
+diff --git a/README.md b/README.md
+index 4987705..7c27fa7 100644
+--- a/README.md
++++ b/README.md
+@@ -60,6 +60,48 @@ python experiments/geotransformer.gaussian_splatting.indoor/demo.py
+ ```
+ The output visualization of gs point clouds and estimated_transform.npz will be saved under 'demo_outputs'. 
+ 
++### 1.5 Offset Benchmark (mixed trials + SLURM-ready)
++
++We provide a benchmark runner at `scripts/run_gaussreg_offsets.sh` that:
++- randomizes ref/src Gaussian pairs,
++- runs GaussReg (`demo.py`),
++- saves transformed PLYs, logs, and estimated transforms,
++- writes a single `results.csv` with run metadata and output paths.
++
++Default schedule per pair:
++- `50` trials in `xyz_only` mode (fast; only xyz transformed),
++- `10` trials in `full_features` mode (xyz + quaternion/SH updates).
++
++Run locally:
++```bash
++./scripts/run_gaussreg_offsets.sh \
++  --data-root /path/to/trained_gaussians \
++  --weights weights/coarse_registration.pth.tar
++```
++
++Key options:
++```bash
++--xyz-trials <int>      # default 50
++--full-trials <int>     # default 10
++--max-translation 500
++--max-rotation-deg 180
++--heartbeat-sec 30      # progress prints while demo is running
++```
++
++SLURM array usage (scene sharding):
++```bash
++sbatch --array=0-3 --gres=gpu:1 --cpus-per-task=8 --mem=32G --time=24:00:00 \
++  --wrap="cd /path/to/GaussReg && ./scripts/run_gaussreg_offsets.sh \
++    --data-root /path/to/trained_gaussians \
++    --weights weights/coarse_registration.pth.tar \
++    --shard-index \${SLURM_ARRAY_TASK_ID} \
++    --num-shards 4"
++```
++
++Notes:
++- Each CSV row includes `trial_mode`, `xyz_only_mode`, and `rotate_sh_mode`.
++- In SLURM, output folder names include job/array ids by default for easier tracking.
++
+ ### 2. Fine Registration
+ 
+ TODO
+diff --git a/environment.yaml b/environment.yaml
+index 4858e47..5eea148 100644
+--- a/environment.yaml
++++ b/environment.yaml
+@@ -21,7 +21,7 @@ dependencies:
+   - ncurses=6.4=h6a678d5_0
+   - openssl=1.1.1l=h7f98852_0
+   - pip=23.2.1=py38h06a4308_0
+-  - python=3.8.0=h0371630_2
++  - python=3.9
+   - python_abi=3.8=2_cp38
+   - readline=7.0=h7b6447c_5
+   - scikit-learn=1.0.2=py38h1561384_0
+@@ -32,6 +32,8 @@ dependencies:
+   - wheel=0.38.4=py38h06a4308_0
+   - xz=5.4.2=h5eee18b_0
+   - zlib=1.2.13=h5eee18b_0
++  - pytorch=1.7.1
++  - cudatoolkit=11.0
+   - pip:
+     - absl-py==1.4.0
+     - addict==2.4.0
+@@ -147,7 +149,6 @@ dependencies:
+     - scipy==1.10.1
+     - send2trash==1.8.2
+     - six==1.16.0
+-    - sklearn==0.0.post9
+     - sniffio==1.3.0
+     - soupsieve==2.5
+     - stack-data==0.6.2
+@@ -157,7 +158,6 @@ dependencies:
+     - terminado==0.17.1
+     - tinycss2==1.2.1
+     - tomli==2.0.1
+-    - torch==1.7.1+cu110
+     - tornado==6.3.3
+     - tqdm==4.66.1
+     - traitlets==5.10.0
+diff --git a/experiments/geotransformer.gaussian_splatting.indoor/test.py b/experiments/geotransformer.gaussian_splatting.indoor/test.py
+index 77597ff..4cd755a 100644
+--- a/experiments/geotransformer.gaussian_splatting.indoor/test.py
++++ b/experiments/geotransformer.gaussian_splatting.indoor/test.py
+@@ -203,13 +203,13 @@ def main():
+     np.savez(os.path.join(output_path, "rse_list.npz"), rse_list = np.array(rse_list))
+     print("rre_avg:", np.array(rre_list).mean())
+     print("rte_avg:", np.array(rte_list).mean())
+-    print("rse_avg:", np.array(rse_list).mean())
++    print("scale_err_abs_avg:", np.array(rse_list).mean())
+     print("rre < 5:", (np.array(rre_list) < 5).sum()/np.array(rre_list).shape[0])
+     print("rre < 10:", (np.array(rre_list) < 10).sum()/np.array(rre_list).shape[0])
+     print("rte < 0.1:", (np.array(rte_list) < 0.1).sum()/np.array(rte_list).shape[0])
+     print("rte < 0.2:", (np.array(rte_list) < 0.2).sum()/np.array(rte_list).shape[0])
+-    print("rse < 0.1:", (np.array(rse_list) < 0.1).sum()/np.array(rse_list).shape[0])
+-    print("rse < 0.2:", (np.array(rse_list) < 0.2).sum()/np.array(rse_list).shape[0])
++    print("scale_err_abs < 0.1:", (np.array(rse_list) < 0.1).sum()/np.array(rse_list).shape[0])
++    print("scale_err_abs < 0.2:", (np.array(rse_list) < 0.2).sum()/np.array(rse_list).shape[0])
+ 
+ 
+ if __name__ == "__main__":
+diff --git a/geotransformer/modules/registration/metrics.py b/geotransformer/modules/registration/metrics.py
+index 59ed017..4601c89 100644
+--- a/geotransformer/modules/registration/metrics.py
++++ b/geotransformer/modules/registration/metrics.py
+@@ -80,6 +80,10 @@ def relative_translation_error(gt_translations, translations):
+     rte = torch.linalg.norm(gt_translations - translations, dim=-1) / torch.linalg.norm(gt_translations, dim=-1)
+     return rte
+ 
++def translation_error(gt_translations, translations):
++    r"""Absolute translation error."""
++    return torch.linalg.norm(gt_translations - translations, dim=-1)
++
+ def relative_scale_error(gt_scale, est_scale):
+     r"""Compute the isotropic Relative Translation Error.
+ 
+@@ -94,8 +98,12 @@ def relative_scale_error(gt_scale, est_scale):
+     """
+     return torch.linalg.norm(gt_scale - est_scale, dim=-1) / torch.linalg.norm(gt_scale, dim=-1)
+ 
++def scale_error_abs(gt_scale, est_scale):
++    r"""Absolute scale error."""
++    return torch.linalg.norm(gt_scale - est_scale, dim=-1)
++
+ def isotropic_transform_error(gt_transforms, transforms, reduction='mean'):
+-    r"""Compute the isotropic Relative Rotation Error and Relative Translation Error.
++    r"""Compute isotropic rotation, absolute translation, and absolute scale error.
+ 
+     Args:
+         gt_transforms (Tensor): ground truth transformation matrix (*, 4, 4)
+@@ -104,7 +112,8 @@ def isotropic_transform_error(gt_transforms, transforms, reduction='mean'):
+ 
+     Returns:
+         rre (Tensor): relative rotation error.
+-        rte (Tensor): relative translation error.
++        rte (Tensor): absolute translation error.
++        rse (Tensor): absolute scale error.
+     """
+     assert reduction in ['mean', 'sum', 'none']
+ 
+@@ -112,8 +121,8 @@ def isotropic_transform_error(gt_transforms, transforms, reduction='mean'):
+     rotations, translations, scales = get_rotation_translation_from_transform_w_scale(transforms)
+ 
+     rre = relative_rotation_error(gt_rotations, rotations)  # (*)
+-    rte = relative_translation_error(gt_translations, translations)  # (*)
+-    rse = relative_scale_error(gt_scales, scales)  # (*)
++    rte = translation_error(gt_translations, translations)  # (*)
++    rse = scale_error_abs(gt_scales, scales)  # (*)
+ 
+     if reduction == 'mean':
+         rre = rre.mean()
+diff --git a/geotransformer/utils/registration.py b/geotransformer/utils/registration.py
+index 3528ed1..40767e5 100644
+--- a/geotransformer/utils/registration.py
++++ b/geotransformer/utils/registration.py
+@@ -48,6 +48,18 @@ def compute_relative_translation_error(gt_translation: np.ndarray, est_translati
+     """
+     return np.linalg.norm(gt_translation - est_translation) / np.linalg.norm(gt_translation)
+ 
++def compute_translation_error(gt_translation: np.ndarray, est_translation: np.ndarray):
++    r"""Compute the absolute translation error.
++
++    Args:
++        gt_translation (array): ground truth translation vector (3,)
++        est_translation (array): estimated translation vector (3,)
++
++    Returns:
++        rte (float): absolute translation error.
++    """
++    return np.linalg.norm(gt_translation - est_translation)
++
+ def compute_relative_scale_error(gt_scale: np.ndarray, est_scale: np.ndarray):
+     r"""Compute the isotropic Relative Translation Error.
+ 
+@@ -62,8 +74,12 @@ def compute_relative_scale_error(gt_scale: np.ndarray, est_scale: np.ndarray):
+     """
+     return np.linalg.norm(gt_scale - est_scale) / np.linalg.norm(gt_scale)
+ 
++def compute_scale_error_abs(gt_scale: np.ndarray, est_scale: np.ndarray):
++    r"""Compute the absolute scale error."""
++    return np.linalg.norm(gt_scale - est_scale)
++
+ def compute_registration_error(gt_transform: np.ndarray, est_transform: np.ndarray):
+-    r"""Compute the isotropic Relative Rotation Error and Relative Translation Error.
++    r"""Compute rotation error and absolute translation error.
+ 
+     Args:
+         gt_transform (array): ground truth transformation matrix (4, 4)
+@@ -71,16 +87,16 @@ def compute_registration_error(gt_transform: np.ndarray, est_transform: np.ndarr
+ 
+     Returns:
+         rre (float): relative rotation error.
+-        rte (float): relative translation error.
++        rte (float): absolute translation error.
+     """
+     gt_rotation, gt_translation = get_rotation_translation_from_transform(gt_transform)
+     est_rotation, est_translation = get_rotation_translation_from_transform(est_transform)
+     rre = compute_relative_rotation_error(gt_rotation, est_rotation)
+-    rte = compute_relative_translation_error(gt_translation, est_translation)
++    rte = compute_translation_error(gt_translation, est_translation)
+     return rre, rte
+ 
+ def compute_registration_error_w_scale(gt_transform: np.ndarray, est_transform: np.ndarray):
+-    r"""Compute the isotropic Relative Rotation Error and Relative Translation Error.
++    r"""Compute rotation, absolute translation, and absolute scale error.
+ 
+     Args:
+         gt_transform (array): ground truth transformation matrix (4, 4)
+@@ -88,13 +104,14 @@ def compute_registration_error_w_scale(gt_transform: np.ndarray, est_transform:
+ 
+     Returns:
+         rre (float): relative rotation error.
+-        rte (float): relative translation error.
++        rte (float): absolute translation error.
++        rse (float): absolute scale error.
+     """
+     gt_rotation, gt_translation, gt_scale = get_rotation_translation_from_transform_w_scale(gt_transform)
+     est_rotation, est_translation, est_scale = get_rotation_translation_from_transform_w_scale(est_transform)
+     rre = compute_relative_rotation_error(gt_rotation, est_rotation)
+-    rte = compute_relative_translation_error(gt_translation, est_translation)
+-    rse = compute_relative_scale_error(gt_scale, est_scale)
++    rte = compute_translation_error(gt_translation, est_translation)
++    rse = compute_scale_error_abs(gt_scale, est_scale)
+     return rre, rte, rse
+ 
+ def compute_rotation_mse_and_mae(gt_rotation: np.ndarray, est_rotation: np.ndarray):

@@ -1,0 +1,122 @@
+group,map,gaussians,aniso_gt_095,lin_gt_095,plan_lt_005
+"Our dataset, full maps",FullSplats/Colmap_Rosbags/Moia2_downsampled/ugv_undistorted/gs_output/point_cloud/iteration_30000/point_cloud.ply,709955,87.39,44.88,49.87
+"Our dataset, full maps",FullSplats/dron1/moia_drone_downsampled/undistorted2/gs_output/point_cloud/iteration_30000/point_cloud.ply,696499,87.68,44.73,49.99
+"Our dataset, full maps",FullSplats/drone2/002_downsampled/undistorted/gs_output/point_cloud/iteration_30000/point_cloud.ply,1575241,93.86,56.51,59.14
+Older submap training runs,submap_gaussians/bicycle/split_neg/point_cloud/iteration_30000/point_cloud.ply,1778021,98.13,75.6,76.6
+Older submap training runs,submap_gaussians/bicycle/split_pos/point_cloud/iteration_30000/point_cloud.ply,1657907,98.17,72.02,73.03
+Older submap training runs,submap_gaussians/bicycle/split_wide_neg/point_cloud/iteration_30000/point_cloud.ply,1740213,97.97,74.69,75.76
+Older submap training runs,submap_gaussians/bicycle/split_wide_pos/point_cloud/iteration_30000/point_cloud.ply,1655265,97.94,70.96,72.08
+Older submap training runs,submap_gaussians/bonsai/split_neg/point_cloud/iteration_30000/point_cloud.ply,709039,70.18,25.6,37.54
+Older submap training runs,submap_gaussians/bonsai/split_pos/point_cloud/iteration_30000/point_cloud.ply,796885,74.12,27.8,37.7
+Older submap training runs,submap_gaussians/bonsai/split_wide_neg/point_cloud/iteration_30000/point_cloud.ply,827845,66.75,24.02,37.32
+Older submap training runs,submap_gaussians/bonsai/split_wide_pos/point_cloud/iteration_30000/point_cloud.ply,843782,73.24,27.88,38.19
+Older submap training runs,submap_gaussians/drone1_undistorted/split_neg/point_cloud/iteration_30000/point_cloud.ply,47513,97.86,71.85,72.9
+Older submap training runs,submap_gaussians/drone1_undistorted/split_pos/point_cloud/iteration_30000/point_cloud.ply,240112,98.16,72.57,73.49
+Older submap training runs,submap_gaussians/drone1_undistorted/split_wide_neg/point_cloud/iteration_30000/point_cloud.ply,57332,96.54,66.61,68.15
+Older submap training runs,submap_gaussians/drone1_undistorted/split_wide_pos/point_cloud/iteration_30000/point_cloud.ply,250904,97.83,71.25,72.32
+Older submap training runs,submap_gaussians/drone2_undistorted/split_neg/point_cloud/iteration_30000/point_cloud.ply,914371,90.16,47.32,51.89
+Older submap training runs,submap_gaussians/drone2_undistorted/split_pos/point_cloud/iteration_30000/point_cloud.ply,757122,90.87,48.48,52.93
+Older submap training runs,submap_gaussians/drone2_undistorted/split_wide_neg/point_cloud/iteration_30000/point_cloud.ply,617466,89.77,45.45,50.1
+Older submap training runs,submap_gaussians/drone2_undistorted/split_wide_pos/point_cloud/iteration_30000/point_cloud.ply,458461,89.94,46.78,51.33
+Older submap training runs,submap_gaussians/flowers/split_neg/point_cloud/iteration_30000/point_cloud.ply,1021702,96.16,47.52,49.26
+Older submap training runs,submap_gaussians/flowers/split_pos/point_cloud/iteration_30000/point_cloud.ply,957104,95.55,44.44,46.41
+Older submap training runs,submap_gaussians/flowers/split_wide_neg/point_cloud/iteration_30000/point_cloud.ply,900745,95.49,43.5,45.47
+Older submap training runs,submap_gaussians/flowers/split_wide_pos/point_cloud/iteration_30000/point_cloud.ply,891788,95.19,42.83,44.89
+Older submap training runs,submap_gaussians/garden/split_neg/point_cloud/iteration_30000/point_cloud.ply,1126869,96.54,65.32,66.88
+Older submap training runs,submap_gaussians/garden/split_pos/point_cloud/iteration_30000/point_cloud.ply,1235609,96.85,67.0,68.47
+Older submap training runs,submap_gaussians/garden/split_wide_neg/point_cloud/iteration_30000/point_cloud.ply,1150755,96.41,64.12,65.71
+Older submap training runs,submap_gaussians/garden/split_wide_pos/point_cloud/iteration_30000/point_cloud.ply,1190584,96.4,65.25,66.89
+Older submap training runs,submap_gaussians/stump/split_neg/point_cloud/iteration_30000/point_cloud.ply,927042,92.82,45.44,48.41
+Older submap training runs,submap_gaussians/stump/split_pos/point_cloud/iteration_30000/point_cloud.ply,1009794,93.04,46.12,48.94
+Older submap training runs,submap_gaussians/stump/split_wide_neg/point_cloud/iteration_30000/point_cloud.ply,910690,93.27,44.48,47.26
+Older submap training runs,submap_gaussians/stump/split_wide_pos/point_cloud/iteration_30000/point_cloud.ply,970036,93.52,45.9,48.6
+Older submap training runs,submap_gaussians/treehill/split_neg/point_cloud/iteration_30000/point_cloud.ply,833765,89.95,41.45,45.31
+Older submap training runs,submap_gaussians/treehill/split_pos/point_cloud/iteration_30000/point_cloud.ply,776612,92.91,48.72,51.65
+Older submap training runs,submap_gaussians/treehill/split_wide_neg/point_cloud/iteration_30000/point_cloud.ply,637151,92.01,42.86,45.99
+Older submap training runs,submap_gaussians/treehill/split_wide_pos/point_cloud/iteration_30000/point_cloud.ply,668502,93.26,47.14,49.92
+Older submap training runs,submap_gaussians/ugv_undistorted/split_neg/point_cloud/iteration_30000/point_cloud.ply,216633,90.06,49.56,53.55
+Older submap training runs,submap_gaussians/ugv_undistorted/split_pos/point_cloud/iteration_30000/point_cloud.ply,6114,87.67,40.61,45.29
+Older submap training runs,submap_gaussians/ugv_undistorted/split_wide_neg/point_cloud/iteration_30000/point_cloud.ply,180432,88.99,49.97,54.56
+Older submap training runs,submap_gaussians/ugv_undistorted/split_wide_pos/point_cloud/iteration_30000/point_cloud.ply,34227,92.44,54.05,57.21
+Mip-NeRF 360 halves,trained_gaussians/bicycle/split_neg/point_cloud/iteration_30000/point_cloud.ply,4151710,87.1,55.18,60.49
+Mip-NeRF 360 halves,trained_gaussians/bicycle/split_pos/point_cloud/iteration_30000/point_cloud.ply,4249393,87.69,53.37,58.12
+Mip-NeRF 360 halves,trained_gaussians/bicycle/split_wide_neg/point_cloud/iteration_30000/point_cloud.ply,4275558,86.63,53.98,59.35
+Mip-NeRF 360 halves,trained_gaussians/bicycle/split_wide_pos/point_cloud/iteration_30000/point_cloud.ply,4465110,87.16,51.85,56.76
+Mip-NeRF 360 halves,trained_gaussians/bonsai/split_neg/point_cloud/iteration_30000/point_cloud.ply,766100,69.83,25.72,37.69
+Mip-NeRF 360 halves,trained_gaussians/bonsai/split_pos/point_cloud/iteration_30000/point_cloud.ply,860887,73.97,28.11,38.03
+Mip-NeRF 360 halves,trained_gaussians/bonsai/split_wide_neg/point_cloud/iteration_30000/point_cloud.ply,873799,66.67,24.28,37.5
+Mip-NeRF 360 halves,trained_gaussians/bonsai/split_wide_pos/point_cloud/iteration_30000/point_cloud.ply,915608,72.99,28.17,38.53
+Mip-NeRF 360 halves,trained_gaussians/counter/split_neg/point_cloud/iteration_30000/point_cloud.ply,740010,85.38,41.97,48.52
+Mip-NeRF 360 halves,trained_gaussians/counter/split_pos/point_cloud/iteration_30000/point_cloud.ply,1222279,83.91,47.26,54.94
+Mip-NeRF 360 halves,trained_gaussians/counter/split_wide_neg/point_cloud/iteration_30000/point_cloud.ply,863136,85.21,42.28,48.92
+Mip-NeRF 360 halves,trained_gaussians/counter/split_wide_pos/point_cloud/iteration_30000/point_cloud.ply,1229588,83.79,46.62,54.1
+"Our dataset, aerial/ground halves",trained_gaussians/drone1_undistorted/split_neg/point_cloud/iteration_30000/point_cloud.ply,1172412,94.19,59.15,61.66
+"Our dataset, aerial/ground halves",trained_gaussians/drone1_undistorted/split_pos/point_cloud/iteration_30000/point_cloud.ply,1864621,94.57,61.36,63.68
+"Our dataset, aerial/ground halves",trained_gaussians/drone1_undistorted/split_wide_neg/point_cloud/iteration_30000/point_cloud.ply,1243518,93.98,57.48,59.98
+"Our dataset, aerial/ground halves",trained_gaussians/drone1_undistorted/split_wide_pos/point_cloud/iteration_30000/point_cloud.ply,1905931,94.28,60.5,62.93
+"Our dataset, aerial/ground halves",trained_gaussians/drone2_undistorted/split_neg/point_cloud/iteration_30000/point_cloud.ply,1676007,90.11,51.49,55.87
+"Our dataset, aerial/ground halves",trained_gaussians/drone2_undistorted/split_pos/point_cloud/iteration_30000/point_cloud.ply,1148675,89.48,47.42,52.33
+"Our dataset, aerial/ground halves",trained_gaussians/drone2_undistorted/split_wide_neg/point_cloud/iteration_30000/point_cloud.ply,1180154,89.76,47.82,52.35
+"Our dataset, aerial/ground halves",trained_gaussians/drone2_undistorted/split_wide_pos/point_cloud/iteration_30000/point_cloud.ply,1251836,89.27,48.16,52.84
+Mip-NeRF 360 halves,trained_gaussians/flowers/split_neg/point_cloud/iteration_30000/point_cloud.ply,2671249,90.12,47.8,51.99
+Mip-NeRF 360 halves,trained_gaussians/flowers/split_pos/point_cloud/iteration_30000/point_cloud.ply,2686585,89.13,46.75,51.28
+Mip-NeRF 360 halves,trained_gaussians/flowers/split_wide_neg/point_cloud/iteration_30000/point_cloud.ply,2715632,88.79,45.8,50.37
+Mip-NeRF 360 halves,trained_gaussians/flowers/split_wide_pos/point_cloud/iteration_30000/point_cloud.ply,2798796,87.73,45.33,50.4
+Mip-NeRF 360 halves,trained_gaussians/garden/split_neg/point_cloud/iteration_30000/point_cloud.ply,3535259,92.99,57.48,60.42
+Mip-NeRF 360 halves,trained_gaussians/garden/split_pos/point_cloud/iteration_30000/point_cloud.ply,4201617,92.36,58.1,61.43
+Mip-NeRF 360 halves,trained_gaussians/garden/split_wide_neg/point_cloud/iteration_30000/point_cloud.ply,3740720,92.66,56.68,59.79
+Mip-NeRF 360 halves,trained_gaussians/garden/split_wide_pos/point_cloud/iteration_30000/point_cloud.ply,4275158,91.7,56.6,60.19
+Mip-NeRF 360 halves,trained_gaussians/kitchen/split_neg/point_cloud/iteration_30000/point_cloud.ply,1229949,80.96,35.39,42.94
+Mip-NeRF 360 halves,trained_gaussians/kitchen/split_pos/point_cloud/iteration_30000/point_cloud.ply,1394484,81.96,36.74,44.23
+Mip-NeRF 360 halves,trained_gaussians/kitchen/split_wide_neg/point_cloud/iteration_30000/point_cloud.ply,1295214,78.5,34.02,42.91
+Mip-NeRF 360 halves,trained_gaussians/kitchen/split_wide_pos/point_cloud/iteration_30000/point_cloud.ply,1653555,78.92,35.35,44.06
+KITTI robot maps,trained_gaussians/kitti00/robot_a/point_cloud/iteration_30000/point_cloud.ply,549781,66.01,26.14,36.04
+KITTI robot maps,trained_gaussians/kitti00/robot_b/point_cloud/iteration_30000/point_cloud.ply,452881,63.68,25.18,35.78
+KITTI robot maps,trained_gaussians/kitti00_07/robot_00/point_cloud/iteration_30000/point_cloud.ply,285746,58.65,22.6,34.15
+KITTI robot maps,trained_gaussians/kitti00_07/robot_07/point_cloud/iteration_30000/point_cloud.ply,573380,67.7,28.12,37.93
+KITTI robot maps,trained_gaussians/kitti02/robot_a/point_cloud/iteration_30000/point_cloud.ply,313335,61.25,23.52,34.13
+KITTI robot maps,trained_gaussians/kitti02/robot_b/point_cloud/iteration_30000/point_cloud.ply,164663,55.25,19.31,30.97
+KITTI robot maps,trained_gaussians/kitti05/robot_a/point_cloud/iteration_30000/point_cloud.ply,494910,65.54,26.92,37.34
+KITTI robot maps,trained_gaussians/kitti05/robot_b/point_cloud/iteration_30000/point_cloud.ply,253384,46.55,17.24,30.28
+KITTI robot maps,trained_gaussians/kitti06/robot_a/point_cloud/iteration_30000/point_cloud.ply,309053,74.95,31.59,39.86
+KITTI robot maps,trained_gaussians/kitti06/robot_b/point_cloud/iteration_30000/point_cloud.ply,338537,64.61,24.23,34.2
+KITTI robot maps,trained_gaussians/kitti07/split_neg/point_cloud/iteration_30000/point_cloud.ply,513485,66.88,28.11,38.29
+KITTI robot maps,trained_gaussians/kitti07/split_pos/point_cloud/iteration_30000/point_cloud.ply,651797,68.34,30.32,41.13
+KITTI robot maps,trained_gaussians/kitti07/split_wide_neg/point_cloud/iteration_30000/point_cloud.ply,515957,65.21,28.57,39.42
+KITTI robot maps,trained_gaussians/kitti07/split_wide_pos/point_cloud/iteration_30000/point_cloud.ply,603618,64.81,28.85,39.95
+KITTI robot maps,trained_gaussians/kitti08/robot_a/point_cloud/iteration_30000/point_cloud.ply,210131,66.18,27.8,38.54
+KITTI robot maps,trained_gaussians/kitti08/robot_b/point_cloud/iteration_30000/point_cloud.ply,345699,65.3,26.7,36.89
+KITTI robot maps,trained_gaussians/kitti09_10/robot_09/point_cloud/iteration_30000/point_cloud.ply,938883,76.92,31.08,38.41
+KITTI robot maps,trained_gaussians/kitti09_10/robot_10/point_cloud/iteration_30000/point_cloud.ply,389786,74.65,33.13,41.46
+Mip-NeRF 360 halves,trained_gaussians/room/split_neg/point_cloud/iteration_30000/point_cloud.ply,1225934,84.26,46.81,54.25
+Mip-NeRF 360 halves,trained_gaussians/room/split_pos/point_cloud/iteration_30000/point_cloud.ply,973418,87.12,51.14,57.33
+Mip-NeRF 360 halves,trained_gaussians/room/split_wide_neg/point_cloud/iteration_30000/point_cloud.ply,1187532,83.16,44.57,52.25
+Mip-NeRF 360 halves,trained_gaussians/room/split_wide_pos/point_cloud/iteration_30000/point_cloud.ply,1186011,85.05,49.15,55.99
+Mip-NeRF 360 halves,trained_gaussians/stump/split_neg/point_cloud/iteration_30000/point_cloud.ply,2433462,78.37,35.94,45.46
+Mip-NeRF 360 halves,trained_gaussians/stump/split_pos/point_cloud/iteration_30000/point_cloud.ply,3128133,75.51,35.26,45.76
+Mip-NeRF 360 halves,trained_gaussians/stump/split_wide_neg/point_cloud/iteration_30000/point_cloud.ply,2939142,74.66,33.57,44.65
+Mip-NeRF 360 halves,trained_gaussians/stump/split_wide_pos/point_cloud/iteration_30000/point_cloud.ply,3214225,75.19,34.93,45.61
+Mip-NeRF 360 halves,trained_gaussians/treehill/split_neg/point_cloud/iteration_30000/point_cloud.ply,3047734,88.05,47.91,52.69
+Mip-NeRF 360 halves,trained_gaussians/treehill/split_pos/point_cloud/iteration_30000/point_cloud.ply,2894414,89.33,50.82,55.19
+Mip-NeRF 360 halves,trained_gaussians/treehill/split_wide_neg/point_cloud/iteration_30000/point_cloud.ply,3157711,86.57,47.52,53.04
+Mip-NeRF 360 halves,trained_gaussians/treehill/split_wide_pos/point_cloud/iteration_30000/point_cloud.ply,3003080,87.83,48.48,53.5
+"Our dataset, aerial/ground halves",trained_gaussians/ugv_undistorted/split_neg/point_cloud/iteration_30000/point_cloud.ply,3533635,81.59,42.33,47.86
+"Our dataset, aerial/ground halves",trained_gaussians/ugv_undistorted/split_pos/point_cloud/iteration_30000/point_cloud.ply,489325,89.77,50.08,54.65
+"Our dataset, aerial/ground halves",trained_gaussians/ugv_undistorted/split_wide_neg/point_cloud/iteration_30000/point_cloud.ply,3395323,82.69,42.32,47.74
+"Our dataset, aerial/ground halves",trained_gaussians/ugv_undistorted/split_wide_pos/point_cloud/iteration_30000/point_cloud.ply,453956,89.85,50.99,55.57
+Tramway (Table I),3DGS-Matcher/examples/splats/tramway.splat,598314,91.34,48.7,53.35
+Third-party .splat (other trainers),LiDAR-3DGS-Relocalization/gs-to-gs-alignment/car-toyota-white.splat,295542,79.51,38.08,46.87
+Third-party .splat (other trainers),LiDAR-3DGS-Relocalization/gs-to-gs-alignment/furisode-butterfly-blue.splat,344410,88.01,40.4,46.25
+"Our drone (.splat, Fig. 3 source)",LiDAR-3DGS-Relocalization/pc-to-gs-alignment/data/gs/moia_drone1.splat,709401,87.32,46.36,51.7
+"Our drone (.splat, Fig. 3 source)",LiDAR-3DGS-Relocalization/pc-to-gs-alignment/data/gs/moia_drone2.splat,1003610,81.15,37.87,44.82
+Third-party .splat (other trainers),LiDAR-3DGS-Relocalization/pc-to-gs-alignment/data/gs/train-1.splat,1064051,90.58,51.3,55.48
+Third-party .splat (other trainers),LiDAR-3DGS-Relocalization/pc-to-gs-alignment/data/gs/train-2.splat,1071503,90.6,51.28,55.45
+Third-party .splat (other trainers),LiDAR-3DGS-Relocalization/pc-to-gs-alignment/data/gs/village.splat,205725,80.98,38.72,45.34
+Third-party .splat (other trainers),Old-3DGS-Matcher/examples/splats/common_face.splat,1679447,97.64,69.33,70.54
+Third-party .splat (other trainers),Old-3DGS-Matcher/examples/splats/north_face.splat,1535584,96.59,63.17,64.85
+Third-party .splat (other trainers),Old-3DGS-Matcher/examples/splats/south_face.splat,1815136,97.65,72.05,73.13
+Third-party .splat (other trainers),Old-3DGS-Matcher/examples/splats/truck-Left.splat,1262165,71.26,37.12,47.27
+Third-party .splat (other trainers),Old-3DGS-Matcher/examples/splats/truck-Right.splat,1624200,65.96,33.82,45.32
+Third-party .splat (other trainers),gaussian-splatting/forests/slides/media/jaume.splat,2242652,79.61,34.32,42.33
+Third-party .splat (other trainers),gaussian-splatting/forests/slides/media/stef1.splat,1507935,81.52,35.94,43.68
+Third-party .splat (other trainers),gaussian-splatting/forests/slides/media/stef2.splat,1169733,85.16,41.24,47.89

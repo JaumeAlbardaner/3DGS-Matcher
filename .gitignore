@@ -1,0 +1,16 @@
+build/
+.venv/
+__pycache__/
+*.pyc
+# data/ is local, except the small KITTI ground-truth corrections
+data/*
+!data/kitti/
+data/kitti/*
+!data/kitti/revisit_gt/
+!data/kitti/align_07_to_00/
+!data/kitti/align_10_to_09/
+third_party/KISS-Matcher/
+third_party/small_gicp/
+
+# local run outputs
+results/

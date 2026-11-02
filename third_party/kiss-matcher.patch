@@ -1,0 +1,136 @@
+diff --git a/cpp/kiss_matcher/core/kiss_matcher/FasterPFH.hpp b/cpp/kiss_matcher/core/kiss_matcher/FasterPFH.hpp
+index 5dc4aa7..c1cfeaa 100644
+--- a/cpp/kiss_matcher/core/kiss_matcher/FasterPFH.hpp
++++ b/cpp/kiss_matcher/core/kiss_matcher/FasterPFH.hpp
+@@ -26,6 +26,9 @@
+ #include "kiss_matcher/kdtree/kdtree_tbb.hpp"
+ #include "kiss_matcher/points/point_cloud.hpp"
+ 
++// Use the original serial KD-tree for feature extraction.
++// The TBB-backed build path is faster, but the benchmark crash is happening
++// inside the parallel tree construction on some submap pairs.
+ using MyKdTree = kiss_matcher::UnsafeKdTree<kiss_matcher::PointCloud>;
+ 
+ // was #define NOT_ASSIGNED -1 but results in a sign comparison warning
+diff --git a/cpp/kiss_matcher/core/kiss_matcher/KISSMatcher.cpp b/cpp/kiss_matcher/core/kiss_matcher/KISSMatcher.cpp
+index 93d1b35..e86f82e 100644
+--- a/cpp/kiss_matcher/core/kiss_matcher/KISSMatcher.cpp
++++ b/cpp/kiss_matcher/core/kiss_matcher/KISSMatcher.cpp
+@@ -72,6 +72,12 @@ kiss_matcher::KeypointPair KISSMatcher::match(const std::vector<Eigen::Vector3f>
+   // Thus, # of `tgt_keypoints_` <= `tgt_processed_`
+   faster_pfh_->ComputeFeature(tgt_keypoints_, tgt_descriptors_);
+ 
++  if (src_keypoints_.empty() || tgt_keypoints_.empty() ||
++      src_descriptors_.empty() || tgt_descriptors_.empty()) {
++    throw std::runtime_error(
++        "KISSMatcher::match: no valid keypoints/descriptors after voxelization/feature extraction");
++  }
++
+   auto t_mid = std::chrono::high_resolution_clock::now();
+ 
+   const auto &corr = robin_matching_->establishCorrespondences(src_keypoints_,
+diff --git a/cpp/kiss_matcher/core/kiss_matcher/ROBINMatching.cpp b/cpp/kiss_matcher/core/kiss_matcher/ROBINMatching.cpp
+index 4acc267..9288543 100644
+--- a/cpp/kiss_matcher/core/kiss_matcher/ROBINMatching.cpp
++++ b/cpp/kiss_matcher/core/kiss_matcher/ROBINMatching.cpp
+@@ -366,6 +366,10 @@ std::vector<size_t> ROBINMatching::applyOutlierPruning(
+ 
+ template <typename T>
+ void ROBINMatching::buildKDTree(const std::vector<T>& data, ROBINMatching::KDTree* tree) {
++  if (data.empty()) {
++    throw std::runtime_error("ROBINMatching::buildKDTree: empty descriptor set");
++  }
++
+   int rows, dim;
+   rows = static_cast<int>(data.size());
+   dim  = static_cast<int>(data[0].size());
+diff --git a/cpp/kiss_matcher/core/kiss_matcher/kdtree/nanoflann.hpp b/cpp/kiss_matcher/core/kiss_matcher/kdtree/nanoflann.hpp
+index 1eba0f7..5f5a707 100644
+--- a/cpp/kiss_matcher/core/kiss_matcher/kdtree/nanoflann.hpp
++++ b/cpp/kiss_matcher/core/kiss_matcher/kdtree/nanoflann.hpp
+@@ -859,6 +859,13 @@ class KDTreeBaseClass {
+   NodePtr divideTree(Derived &obj, const Offset left, const Offset right, BoundingBox &bbox) {
+     NodePtr node = obj.pool.template allocate<Node>();  // allocate memory
+ 
++    if (right <= left) {
++      node->child1 = node->child2 = NULL;
++      node->node_type.lr.left     = left;
++      node->node_type.lr.right    = left;
++      return node;
++    }
++
+     /* If too few exemplars remain, then make this a leaf node. */
+     if ((right - left) <= static_cast<Offset>(obj.m_leaf_max_size)) {
+       node->child1 = node->child2 = NULL; /* Mark as leaf node. */
+@@ -884,6 +891,26 @@ class KDTreeBaseClass {
+       DistanceType cutval;
+       middleSplit_(obj, left, right - left, idx, cutfeat, cutval, bbox);
+ 
++      if (idx == 0 || idx >= (right - left)) {
++        node->child1 = node->child2 = NULL;
++        node->node_type.lr.left     = left;
++        node->node_type.lr.right    = right;
++
++        for (Dimension i = 0; i < (DIM > 0 ? DIM : obj.dim); ++i) {
++          bbox[i].low  = dataset_get(obj, obj.vind[left], i);
++          bbox[i].high = bbox[i].low;
++        }
++        for (Offset k = left + 1; k < right; ++k) {
++          for (Dimension i = 0; i < (DIM > 0 ? DIM : obj.dim); ++i) {
++            if (bbox[i].low > dataset_get(obj, obj.vind[k], i))
++              bbox[i].low = dataset_get(obj, obj.vind[k], i);
++            if (bbox[i].high < dataset_get(obj, obj.vind[k], i))
++              bbox[i].high = dataset_get(obj, obj.vind[k], i);
++          }
++        }
++        return node;
++      }
++
+       node->node_type.sub.divfeat = cutfeat;
+ 
+       BoundingBox left_bbox(bbox);
+diff --git a/cpp/kiss_matcher/core/kiss_matcher/kdtree/nanoflann_tbb.hpp b/cpp/kiss_matcher/core/kiss_matcher/kdtree/nanoflann_tbb.hpp
+index e231e2b..d13df9d 100644
+--- a/cpp/kiss_matcher/core/kiss_matcher/kdtree/nanoflann_tbb.hpp
++++ b/cpp/kiss_matcher/core/kiss_matcher/kdtree/nanoflann_tbb.hpp
+@@ -183,6 +183,13 @@ class KDTreeBaseClassTBB {
+   NodePtr divideTree(Derived& obj, const Offset left, const Offset right, BoundingBox& bbox) {
+     NodePtr node = &(*pool.emplace_back());
+ 
++    if (right <= left) {
++      node->child1 = node->child2 = NULL;
++      node->node_type.lr.left     = left;
++      node->node_type.lr.right    = left;
++      return node;
++    }
++
+     /* If too few exemplars remain, then make this a leaf node. */
+     if ((right - left) <= static_cast<Offset>(obj.m_leaf_max_size)) {
+       node->child1 = node->child2 = NULL; /* Mark as leaf node. */
+@@ -208,6 +215,26 @@ class KDTreeBaseClassTBB {
+       DistanceType cutval;
+       middleSplit_(obj, left, right - left, idx, cutfeat, cutval, bbox);
+ 
++      if (idx == 0 || idx >= (right - left)) {
++        node->child1 = node->child2 = NULL;
++        node->node_type.lr.left     = left;
++        node->node_type.lr.right    = right;
++
++        for (Dimension i = 0; i < (DIM > 0 ? DIM : obj.dim); ++i) {
++          bbox[i].low  = dataset_get(obj, obj.vind[left], i);
++          bbox[i].high = bbox[i].low;
++        }
++        for (Offset k = left + 1; k < right; ++k) {
++          for (Dimension i = 0; i < (DIM > 0 ? DIM : obj.dim); ++i) {
++            if (bbox[i].low > dataset_get(obj, obj.vind[k], i))
++              bbox[i].low = dataset_get(obj, obj.vind[k], i);
++            if (bbox[i].high < dataset_get(obj, obj.vind[k], i))
++              bbox[i].high = dataset_get(obj, obj.vind[k], i);
++          }
++        }
++        return node;
++      }
++
+       node->node_type.sub.divfeat = cutfeat;
+ 
+       BoundingBox left_bbox(bbox);

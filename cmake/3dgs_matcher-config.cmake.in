@@ -1,0 +1,13 @@
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+
+# Find dependencies
+find_dependency(Eigen3 REQUIRED)
+find_dependency(TBB REQUIRED)
+find_dependency(kiss_matcher REQUIRED)
+
+# Include the targets file
+include("${CMAKE_CURRENT_LIST_DIR}/3dgs_matcher-targets.cmake")
+
+check_required_components(3dgs_matcher)

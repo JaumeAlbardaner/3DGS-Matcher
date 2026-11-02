@@ -1,0 +1,27 @@
+[project]
+name = "3dgs-matcher-evaluation"
+version = "1.0.0"
+description = "Experiments and paper data for 3DGS-Matcher (IEEE RA-L 2026)"
+readme = "README.md"
+license = { file = "LICENSE" }
+# open3d 0.19 (the version behind the paper's Colored-ICP baseline) ships wheels up to 3.12
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    "numpy>=1.26,<3",
+    "scipy>=1.11",
+    "matplotlib>=3.8",
+    "pandas>=2.1",
+    "open3d==0.19.0",
+    "pillow>=10",
+    "plyfile>=1.0",
+]
+
+[project.scripts]
+reproduce = "reproduce.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["reproduce"]

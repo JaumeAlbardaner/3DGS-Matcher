@@ -1,0 +1,44 @@
+diff --git a/experiments/ColorPCR/loss.py b/experiments/ColorPCR/loss.py
+index f7f3045..2de8dc5 100644
+--- a/experiments/ColorPCR/loss.py
++++ b/experiments/ColorPCR/loss.py
+@@ -146,7 +146,7 @@ class Evaluator(nn.Module):
+ 
+         rre, rte = isotropic_transform_error(transform, est_transform)
+ 
+-        realignment_transform = torch.matmul(torch.inverse(transform), est_transform)
++        realignment_transform = torch.matmul(torch.inverse(transform.cpu()).to(transform.device), est_transform)
+         realigned_src_points_f = apply_transform(src_points, realignment_transform)
+         rmse = torch.linalg.norm(realigned_src_points_f - src_points, dim=1).mean()
+         recall = torch.lt(rmse, self.acceptance_rmse).float()
+diff --git a/geotransformer/modules/registration/metrics.py b/geotransformer/modules/registration/metrics.py
+index 9dc51fb..cb84285 100644
+--- a/geotransformer/modules/registration/metrics.py
++++ b/geotransformer/modules/registration/metrics.py
+@@ -28,7 +28,7 @@ def modified_chamfer_distance(raw_points, ref_points, src_points, gt_transform,
+     chamfer_distance_p_q = torch.sqrt(nn_sq_distances_p_q).mean(dim=-1)  # (B)
+ 
+     # Q -> P_raw
+-    composed_transform = torch.matmul(transform, torch.inverse(gt_transform))  # (B, 4, 4)
++    composed_transform = torch.matmul(transform, torch.inverse(gt_transform.cpu()).to(gt_transform.device))  # (B, 4, 4)
+     aligned_raw_points = apply_transform(raw_points, composed_transform)  # (B, N_raw, 3)
+     sq_dist_mat_q_p = pairwise_distance(ref_points, aligned_raw_points)  # (B, N_ref, N_raw)
+     nn_sq_distances_q_p = sq_dist_mat_q_p.min(dim=-1)[0]  # (B, N_ref)
+diff --git a/geotransformer/modules/registration/procrustes.py b/geotransformer/modules/registration/procrustes.py
+index 7a53892..7629c13 100644
+--- a/geotransformer/modules/registration/procrustes.py
++++ b/geotransformer/modules/registration/procrustes.py
+@@ -51,10 +51,10 @@ def weighted_procrustes(
+ 
+     H = src_points_centered.permute(0, 2, 1) @ (weights * ref_points_centered)
+     U, _, V = torch.svd(H.cpu())  # H = USV^T
+-    Ut, V = U.transpose(1, 2).cuda(), V.cuda()
+-    eye = torch.eye(3).unsqueeze(0).repeat(batch_size, 1, 1).cuda()
++    Ut = U.transpose(1, 2)
++    eye = torch.eye(3).unsqueeze(0).repeat(batch_size, 1, 1)
+     eye[:, -1, -1] = torch.sign(torch.det(V @ Ut))
+-    R = V @ eye @ Ut
++    R = (V @ eye @ Ut).cuda()
+ 
+     t = ref_centroid.permute(0, 2, 1) - R @ src_centroid.permute(0, 2, 1)
+     t = t.squeeze(2)
