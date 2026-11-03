@@ -31,6 +31,8 @@
       box-shadow: var(--shadow-lg); transition: var(--transition);
     }
     .cora-button:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: var(--shadow-xl); }
+    .cora-button.is-soon { opacity: 0.6; cursor: default; }
+    .cora-button.is-soon:hover { background: var(--primary-color); transform: none; box-shadow: var(--shadow-lg); }
     .cora-note { color: var(--text-secondary); font-size: 0.95rem; }
 
     .fact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.9rem; margin: 1.5rem 0; }
@@ -86,9 +88,9 @@
         </p>
 
         <div class="cora-cta">
-          <!-- TODO: replace CORA_URL with the dataset's CORA record (dataverse.csuc.cat) -->
-          <a class="cora-button" href="CORA_URL" target="_blank" rel="noopener">
-            <i class="fas fa-download"></i><span>Download from CORA</span>
+          <!-- TODO: when the CORA record is live, restore href="CORA_URL" target="_blank" rel="noopener", drop is-soon/aria-disabled and "(coming soon)" -->
+          <a class="cora-button is-soon" aria-disabled="true" title="Upload in progress">
+            <i class="fas fa-download"></i><span>Download from CORA (coming soon)</span>
           </a>
           <span class="cora-note">Hosted on CORA, the Catalan research data repository</span>
         </div>
@@ -247,8 +249,8 @@
       </article>
 
       <div class="cora-cta" style="margin-bottom: 1rem;">
-        <a class="cora-button" href="CORA_URL" target="_blank" rel="noopener">
-          <i class="fas fa-download"></i><span>Download the full dataset from CORA</span>
+        <a class="cora-button is-soon" aria-disabled="true" title="Upload in progress">
+          <i class="fas fa-download"></i><span>Download the full dataset from CORA (coming soon)</span>
         </a>
         <span class="cora-note">The trained 3DGS maps used in the paper are available with the evaluation code.</span>
       </div>
