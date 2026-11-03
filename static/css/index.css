@@ -805,3 +805,60 @@ figure figcaption {
   font-size: 0.7em; font-weight: 600; letter-spacing: 0.02em;
   background: rgb(255 255 255 / 0.18); color: rgb(255 255 255 / 0.85);
 }
+
+/* Affiliations: the three institutions side by side on one row */
+.publication-authors.affiliations {
+  display: flex; flex-wrap: nowrap; justify-content: center; align-items: flex-start;
+  gap: 2rem; font-size: 1.05rem !important;
+}
+.publication-authors.affiliations .author-block { flex: 0 1 auto; margin: 0; }
+@media (max-width: 768px) {
+  .publication-authors.affiliations { flex-wrap: wrap; gap: 0.75rem 1.5rem; font-size: 0.95rem !important; }
+}
+
+/* Affiliation and funder logos */
+.logo-row { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 1.5rem 3rem; margin: 1.75rem 0; }
+.logo-row img { height: 56px; width: auto; display: block; }
+.logo-row a { display: block; }
+.logo-row a::after { display: none !important; }
+.logo-row.funders { gap: 1.25rem 2rem; }
+.logo-row.funders img { height: 40px; }
+.eu-emblem { display: inline-flex; align-items: center; gap: 0.6rem; font-family: Arial, Helvetica, sans-serif; font-size: 0.85rem; line-height: 1.15; color: #000; text-align: left; }
+.logo-row.funders .eu-emblem img { height: 38px; }
+.funding-text { max-width: 760px; margin: 0.5rem auto 0; font-size: 0.9rem; color: var(--text-secondary); text-align: center; }
+@media (max-width: 768px) {
+  .logo-row { gap: 1.25rem 1.75rem; }
+  .logo-row img { height: 40px; }
+  .logo-row.funders img { height: 36px; }
+  .logo-row.funders .eu-emblem img { height: 34px; }
+}
+
+/* Institution logos above each affiliation */
+.affiliations .author-block { display: flex; flex-direction: column; align-items: center; }
+.aff-logos { display: flex; align-items: center; justify-content: center; gap: 0.9rem; height: 52px; margin-bottom: 0.6rem; }
+.aff-logos a { display: block; }
+.aff-logos a::after { display: none !important; }
+.aff-logos img { height: 44px; width: auto; display: block; }
+@media (max-width: 768px) {
+  .aff-logos { height: 40px; }
+  .aff-logos img { height: 32px; }
+}
+
+.chart-note { max-width: 760px; margin: 1rem auto 0; font-size: 0.85rem; color: var(--text-secondary); }
+.bar-chart.compact.units .bar-row { grid-template-columns: 13rem 1fr 4rem; }
+@media (max-width: 768px) { .bar-chart.compact.units .bar-row { grid-template-columns: 8.5rem 1fr 3.6rem; } .bar-chart.units .bar-value { white-space: nowrap; } }
+
+/* Perturbation cards: what each change looks like, and its result */
+.pc-group { margin: 2rem 0 0.75rem; font-weight: 700; color: var(--text-primary); }
+.pc-group span { display: block; font-weight: 400; font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.15rem; }
+.pcard-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
+.pcard-grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 50%; }
+@media (max-width: 1000px) { .pcard-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .pcard-grid.two { max-width: none; } }
+@media (max-width: 480px) { .pcard-grid, .pcard-grid.two { grid-template-columns: 1fr; } }
+.pcard { margin: 0; background: var(--background-primary); border: 1px solid var(--border-color); border-radius: var(--border-radius); overflow: hidden; }
+.pcard img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.pcard figcaption { padding: 0.6rem 0.75rem 0.75rem; font-size: 0.85rem; line-height: 1.35; text-align: left; }
+.pcard figcaption b { display: block; color: var(--text-primary); }
+.pc-what { display: block; color: var(--text-secondary); margin: 0.15rem 0 0.4rem; }
+.pc-ours { display: block; color: var(--text-primary); font-weight: 600; }
+.pc-other { display: block; color: var(--text-secondary); }

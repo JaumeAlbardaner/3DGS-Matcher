@@ -175,10 +175,10 @@
                   </span>
                   </div>
 
-                  <div class="is-size-5 publication-authors">
-                    <span class="author-block"><sup>1</sup>Karl Popper Kolleg on ForestScope<br>University of Klagenfurt<br>Austria</span>
-                    <span class="author-block"><sup>2</sup>Polytechnique Montréal<br>Canada</span>
-                    <span class="author-block"><sup>3</sup>Institut de Robòtica i Informàtica Industrial<br>Universitat Politècnica de Catalunya<br>Spain</span>
+                  <div class="is-size-5 publication-authors affiliations">
+                    <span class="author-block"><span class="aff-logos"><a href="https://www.aau.at/en/" target="_blank" rel="noopener"><img src="static/images/logos/klagenfurt.png" alt="University of Klagenfurt"></a></span><span class="aff-text"><sup>1</sup>Karl Popper Kolleg on ForestScope<br>University of Klagenfurt<br>Austria</span></span>
+                    <span class="author-block"><span class="aff-logos"><a href="https://www.polymtl.ca/en" target="_blank" rel="noopener"><img src="static/images/logos/polytechnique.png" alt="Polytechnique Montréal"></a></span><span class="aff-text"><sup>2</sup>Polytechnique Montréal<br>Canada</span></span>
+                    <span class="author-block"><span class="aff-logos"><a href="https://www.iri.upc.edu/" target="_blank" rel="noopener"><img src="static/images/logos/iri.png" alt="Institut de Robòtica i Informàtica Industrial"></a><a href="https://www.upc.edu/en" target="_blank" rel="noopener"><img src="static/images/logos/upc.svg" alt="Universitat Politècnica de Catalunya"></a></span><span class="aff-text"><sup>3</sup>Institut de Robòtica i Informàtica Industrial<br>Universitat Politècnica de Catalunya<br>Spain</span></span>
                     <!-- <span class="eql-cntrb"><small><br><sup>*</sup>Indicates Equal Contribution</small></span> -->
                   </div>
 
@@ -218,20 +218,20 @@
                   <span>arXiv</span><span class="soon-tag">soon</span>
                 </a>
               </span>
-              <!-- Dataset: will link to the CoRa dataset website -->
+              <!-- Dataset: description page, which links to the CORA download -->
               <span class="link-block">
-                <a href="#" target="_blank" style="pointer-events: none"
+                <a href="dataset.html"
                 class="external-link button is-normal is-rounded is-dark">
                   <span class="icon"><i class="fas fa-database"></i></span>
-                  <span>Dataset</span><span class="soon-tag">soon</span>
+                  <span>Dataset</span>
                 </a>
               </span>
-              <!-- Evaluation: will link to the experiment code (website or 3DGS-Matcher branch) -->
+              <!-- Evaluation: experiment code and result CSVs (evaluation branch) -->
               <span class="link-block">
-                <a href="#" target="_blank" style="pointer-events: none"
+                <a href="https://github.com/JaumeAlbardaner/3DGS-Matcher/tree/evaluation" target="_blank"
                 class="external-link button is-normal is-rounded is-dark">
                   <span class="icon"><i class="fas fa-chart-bar"></i></span>
-                  <span>Evaluation</span><span class="soon-tag">soon</span>
+                  <span>Evaluation</span>
                 </a>
               </span>
             </div>
@@ -334,7 +334,7 @@
 <section class="section" id="why-color">
   <div class="container is-max-desktop">
     <h3 class="title is-4 result-title">Splat shape is a weak cue</h3>
-    <p class="takeaway">Gaussians are optimized for rendering, not geometry. Across 121 trained maps (162 M splats), most splats are needle-like or flat, so local shape cannot tell them apart.</p>
+    <p class="takeaway">Gaussians are optimized for rendering, not geometry. Across 121 trained maps (162 M splats), most splats are needle-like or flat, so eigenvalue-based shape descriptors have little to tell them apart.</p>
     <div class="columns is-variable is-2">
       <div class="column"><figure><img src="static/images/anisotropy_pooled.png" alt="Anisotropy histogram" loading="lazy"><figcaption>84% have anisotropy &gt; 0.95</figcaption></figure></div>
       <div class="column"><figure><img src="static/images/linearity_pooled.png" alt="Linearity histogram" loading="lazy"><figcaption>45% have linearity &gt; 0.95</figcaption></figure></div>
@@ -342,24 +342,99 @@
     </div>
     <figure class="figure-narrow">
       <img src="static/images/descriptor_ablation.png" alt="Registration success by descriptor family" loading="lazy">
-      <figcaption>Over more than 23,000 registration trials, color descriptors succeed far more often than geometric, mixed or opacity-based ones.</figcaption>
+      <figcaption>Over 56,400 registration trials on the tramway map, color descriptors succeed far more often than the FPFH-based geometric, mixed and opacity-based descriptors we tested.</figcaption>
     </figure>
   </div>
 </section>
 
 <section class="section hero is-light" id="robust">
   <div class="container is-max-desktop">
-    <h3 class="title is-4 result-title">Robust to appearance and overlap changes</h3>
-    <p class="takeaway">We match two copies of one tramway splat after disrupting one of them. Color matching holds up under global color offsets, noise, outliers and partial overlap.</p>
-    <figure class="figure-narrow">
-      <video autoplay muted loop playsinline preload="metadata"><source src="static/videos/tramway_disruptions.mp4" type="video/mp4"></video>
-    </figure>
+    <h3 class="title is-4 result-title">Robust to appearance, scale and overlap changes</h3>
+    <p class="takeaway">We register two copies of one tramway splat after changing one of them. Each image shows the changed copy, and below it how often coarse 3DGS-Matcher still recovers the pose (within 5&deg; and 0.5 m, 100 trials each).</p>
+
+    <p class="pc-group">Noise, outliers and partial overlap <span>Table I sweeps the noise from 0 to 0.2 m. Images and the first number are at 0.1 m, the second is the average over the sweep.</span></p>
+    <div class="pcard-grid">
+        <figure class="pcard">
+          <img src="static/images/perturbations/baseline.jpg" alt="Position + color noise" loading="lazy">
+          <figcaption><b>Position + color noise</b><span class="pc-what">&sigma; = 0.1 m on positions, CIELAB noise &sigma; = 1</span><span class="pc-ours">Ours: 100% here, 100% over the sweep</span><span class="pc-other">Centroid keypoints: 98%, 84%</span></figcaption>
+        </figure>
+        <figure class="pcard">
+          <img src="static/images/perturbations/color_offset.jpg" alt="Global color offset" loading="lazy">
+          <figcaption><b>Global color offset</b><span class="pc-what">One random CIELAB shift for the whole map, plus noise</span><span class="pc-ours">Ours: 100% here, 100% over the sweep</span><span class="pc-other">Centroid keypoints: 100%, 85%</span></figcaption>
+        </figure>
+        <figure class="pcard">
+          <img src="static/images/perturbations/outliers.jpg" alt="30% strong outliers" loading="lazy">
+          <figcaption><b>30% strong outliers</b><span class="pc-what">Splats thrown up to metres away with random colors</span><span class="pc-ours">Ours: 100% here, 100% over the sweep</span><span class="pc-other">Centroid keypoints: 99%, 58%</span></figcaption>
+        </figure>
+        <figure class="pcard">
+          <img src="static/images/perturbations/split_half.jpg" alt="Partial overlap" loading="lazy">
+          <figcaption><b>Partial overlap</b><span class="pc-what">Blue: source half. Orange: noisy target half, 25% shared</span><span class="pc-ours">Ours: 100% here, 99.6% over the sweep</span><span class="pc-other">Centroid keypoints: 80%, 53%</span></figcaption>
+        </figure>
+    </div>
+
+    <p class="pc-group">Photometric changes <span>The kind of difference a second camera or a second capture produces, with 2 cm position jitter and no added noise.</span></p>
+    <div class="pcard-grid">
+        <figure class="pcard">
+          <img src="static/images/perturbations/clean.jpg" alt="Unchanged map" loading="lazy">
+          <figcaption><b>Unchanged map</b><span class="pc-what">The reference, with the same 2 cm jitter</span><span class="pc-ours">100% success, median error 0.1 cm</span></figcaption>
+        </figure>
+        <figure class="pcard">
+          <img src="static/images/perturbations/exposure_0.7.jpg" alt="Exposure &minus;0.5 EV" loading="lazy">
+          <figcaption><b>Exposure &minus;0.5 EV</b><span class="pc-what">Linear-light gain 0.7</span><span class="pc-ours">100% success, median error 0.2 cm</span></figcaption>
+        </figure>
+        <figure class="pcard">
+          <img src="static/images/perturbations/exposure_1.4.jpg" alt="Exposure +0.5 EV" loading="lazy">
+          <figcaption><b>Exposure +0.5 EV</b><span class="pc-what">Linear-light gain 1.4</span><span class="pc-ours">100% success, median error 0.3 cm</span></figcaption>
+        </figure>
+        <figure class="pcard">
+          <img src="static/images/perturbations/gamma_0.8.jpg" alt="Gamma 0.8" loading="lazy">
+          <figcaption><b>Gamma 0.8</b><span class="pc-what">Brighter tone curve</span><span class="pc-ours">100% success, median error 0.6 cm</span></figcaption>
+        </figure>
+        <figure class="pcard">
+          <img src="static/images/perturbations/gamma_1.25.jpg" alt="Gamma 1.25" loading="lazy">
+          <figcaption><b>Gamma 1.25</b><span class="pc-what">Darker tone curve</span><span class="pc-ours">100% success, median error 0.7 cm</span></figcaption>
+        </figure>
+        <figure class="pcard">
+          <img src="static/images/perturbations/wb_warm.jpg" alt="Warm white balance" loading="lazy">
+          <figcaption><b>Warm white balance</b><span class="pc-what">Red &times;1.15, blue &times;0.85</span><span class="pc-ours">100% success, median error 0.2 cm</span></figcaption>
+        </figure>
+        <figure class="pcard">
+          <img src="static/images/perturbations/wb_cool.jpg" alt="Cool white balance" loading="lazy">
+          <figcaption><b>Cool white balance</b><span class="pc-what">Red &times;0.85, blue &times;1.15</span><span class="pc-ours">100% success, median error 0.2 cm</span></figcaption>
+        </figure>
+        <figure class="pcard">
+          <img src="static/images/perturbations/shadow_0.4.jpg" alt="Cast shadow" loading="lazy">
+          <figcaption><b>Cast shadow</b><span class="pc-what">Half the map at 40% of its light</span><span class="pc-ours">100% success, median error 0.2 cm</span></figcaption>
+        </figure>
+    </div>
+
+    <p class="pc-group">Metric scale error <span>The target map is scaled about its centre, as when the external metric anchor is slightly off.</span></p>
+    <div class="pcard-grid two">
+        <figure class="pcard">
+          <img src="static/images/perturbations/scale_1.05.jpg" alt="Scale error 5%" loading="lazy">
+          <figcaption><b>Scale error 5%</b><span class="pc-what">Orange: where the scaled map extends past the original</span><span class="pc-ours">100% success, median error 12 cm</span></figcaption>
+        </figure>
+        <figure class="pcard">
+          <img src="static/images/perturbations/scale_1.10.jpg" alt="Scale error 10%" loading="lazy">
+          <figcaption><b>Scale error 10%</b><span class="pc-what">Orange: where the scaled map extends past the original</span><span class="pc-ours">93% success, median error 37 cm</span></figcaption>
+        </figure>
+    </div>
+    <div class="bar-chart compact">
+      <p class="bar-chart-title">Success rate against scale error (100 trials each)</p>
+      <div class="bar-row" title="Scale error 0%: 100% success"><span class="bar-label">0% (exact scale)</span><span class="bar-track"><span class="bar-fill" style="width:100%"></span></span><span class="bar-value">100%</span></div>
+      <div class="bar-row" title="Scale error 1%: 100% success"><span class="bar-label">1%</span><span class="bar-track"><span class="bar-fill" style="width:100%"></span></span><span class="bar-value">100%</span></div>
+      <div class="bar-row" title="Scale error 2%: 100% success"><span class="bar-label">2%</span><span class="bar-track"><span class="bar-fill" style="width:100%"></span></span><span class="bar-value">100%</span></div>
+      <div class="bar-row" title="Scale error 5%: 100% success"><span class="bar-label">5%</span><span class="bar-track"><span class="bar-fill" style="width:100%"></span></span><span class="bar-value">100%</span></div>
+      <div class="bar-row" title="Scale error 10%: 93% success"><span class="bar-label">10%</span><span class="bar-track"><span class="bar-fill" style="width:93%"></span></span><span class="bar-value">93%</span></div>
+    </div>
+    <p class="chart-note">Ours: coarse 3DGS-Matcher with RGB + ColorPFH + opacity and joint-5D keypoints. Centroid keypoints: the same descriptor with plain voxel downsampling.
+      These are synthetic changes on a single scene and test only the coarse stage, so they show tolerance on this map rather than general photometric invariance.</p>
   </div>
 </section>
 
 <section class="section" id="mipnerf">
   <div class="container is-max-desktop">
-    <h3 class="title is-4 result-title">Beats geometric and learned baselines</h3>
+    <h3 class="title is-4 result-title">Outperforms the FPFH-based and learned baselines we tested</h3>
     <p class="takeaway">Each Mip-NeRF 360 scene is split into two camera halves, and a separate 3DGS map is trained on each. One map starts from a random pose and must be brought back.</p>
     <div class="loop-grid two">
         <figure class="loop">
@@ -381,7 +456,7 @@
     </div>
     <div class="bar-chart">
       <p class="bar-chart-title">Success rate, 9 scenes &times; 200 random start poses (within 5&deg; and 0.5 m of ground truth)</p>
-      <div class="bar-row "><span class="bar-label">KISS-Matcher (geometry only)</span><span class="bar-track"><span class="bar-fill" style="width:6.0%"></span></span><span class="bar-value">6%</span></div>
+      <div class="bar-row "><span class="bar-label">KISS-Matcher (FPFH)</span><span class="bar-track"><span class="bar-fill" style="width:6.0%"></span></span><span class="bar-value">6%</span></div>
       <div class="bar-row "><span class="bar-label">Ours, centroid keypoints</span><span class="bar-track"><span class="bar-fill" style="width:45.4%"></span></span><span class="bar-value">45%</span></div>
       <div class="bar-row "><span class="bar-label">ColorPCR (learned)</span><span class="bar-track"><span class="bar-fill" style="width:45.9%"></span></span><span class="bar-value">46%</span></div>
       <div class="bar-row "><span class="bar-label">GaussReg (learned, GPU)</span><span class="bar-track"><span class="bar-fill" style="width:62.1%"></span></span><span class="bar-value">62%</span></div>
@@ -394,7 +469,7 @@
 <section class="section hero is-light" id="kitti">
   <div class="container is-max-desktop">
     <h3 class="title is-4 result-title">Merges maps from different robots</h3>
-    <p class="takeaway">Each robot builds its own 3DGS map from a separate stretch of a KITTI drive. The maps overlap only where the routes meet, sometimes on different days. KISS-Matcher with geometric features fails on every pair.</p>
+    <p class="takeaway">Each robot builds its own 3DGS map from a separate stretch of a KITTI drive. The maps overlap only where the routes meet, sometimes on different days. KISS-Matcher with FPFH features fails on every pair.</p>
     <div class="columns is-vcentered">
       <div class="column is-7">
         <video class="single" autoplay muted loop playsinline preload="metadata"><source src="static/videos/kitti_00_07.mp4" type="video/mp4"></video>
@@ -415,15 +490,15 @@
 <section class="section" id="aerial-ground">
   <div class="container is-max-desktop">
     <h3 class="title is-4 result-title">Aligns aerial and ground maps</h3>
-    <p class="takeaway">Two drone flights and one ground-vehicle drive over the same farmhouse, each turned into its own 3DGS map with different sensors, viewpoints and resolution.</p>
+    <p class="takeaway">Two drone flights and one ground-vehicle drive over the same farmhouse, each turned into its own 3DGS map with different sensors, viewpoints and resolution. There is no ground truth, so we register each pair from 100 random restarts: for the drone and ground maps, 26% converge to a common pose, about 3.8 restarts per success, and these can run in parallel.</p>
     <div class="loop-grid two">
         <figure class="loop">
           <video autoplay muted loop playsinline preload="metadata"><source src="static/videos/farm_av1_av2.mp4" type="video/mp4"></video>
-          <figcaption>Drone 1 &rarr; drone 2: 70% of drone 1 lies within 0.5 m of drone 2</figcaption>
+          <figcaption>Drone 1 &rarr; drone 2: 60% of drone 1 lies within 0.5 m of drone 2</figcaption>
         </figure>
         <figure class="loop">
           <video autoplay muted loop playsinline preload="metadata"><source src="static/videos/farm_av2_gv.mp4" type="video/mp4"></video>
-          <figcaption>Drone &rarr; ground vehicle: 97% of the ground map lies within 0.5 m of the drone map</figcaption>
+          <figcaption>Drone &rarr; ground vehicle: 85% of the ground map lies within 0.5 m of the drone map</figcaption>
         </figure>
     </div>
   </div>
@@ -449,6 +524,31 @@
   </div>
 </section>
 <!-- End poster -->
+
+<!-- Funding -->
+<section class="section hero is-light" id="acknowledgements">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Funding</h2>
+
+    <div class="logo-row funders">
+      <a href="https://triffid-project.eu/" target="_blank" rel="noopener"><img src="static/images/logos/triffid.png" alt="TRIFFID project" loading="lazy"></a>
+      <span class="eu-emblem"><img src="static/images/logos/eu_flag.svg" alt="" loading="lazy"><span>Funded by<br>the European Union</span></span>
+      <img src="static/images/logos/miciu.png" alt="Spanish Ministry of Science, Innovation and Universities" loading="lazy">
+      <img src="static/images/logos/aei.svg" alt="Agencia Estatal de Investigación" loading="lazy">
+      <img src="static/images/logos/gencat.svg" alt="Generalitat de Catalunya" loading="lazy">
+    </div>
+
+    <p class="funding-text">
+      This work has been partially supported by the European Union's Horizon Europe research and
+      innovation programme under Grant Agreement No. 101168042 (TRIFFID), by the Spanish Ministry of
+      Science and Innovation through project CELINA (PID2025-176256NB-I00, funded by
+      MICIU/AEI/10.13039/501100011033), by the Generalitat de Catalunya through the Consolidated
+      Research Group RAIG (2021 SGR 00510), and by the University of Klagenfurt within the doctoral
+      school KPK-ForestScope.
+    </p>
+  </div>
+</section>
+<!-- End funding -->
 
 
 

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dataset | 3DGS-Matcher</title>
+  <meta name="description" content="Aerial and ground recordings used by 3DGS-Matcher: ROS2 bags from a handheld LiDAR, camera, GNSS and IMU sensor box, and DJI drone footage, downloadable from CORA.">
+  <meta name="author" content="Jaume Albardaner i Torras, Félix Auger, Frédérick Lanthier, Àngel Santamaria-Navarro">
+  <meta name="theme-color" content="#2563eb">
+  <link rel="icon" type="image/x-icon" href="https://github.com/JaumeAlbardaner/JaumeAlbardaner.github.io/blob/master/assets/img/J.png?raw=true">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+
+  <style>
+    .back-link { display: inline-block; margin-bottom: 1.25rem; color: var(--text-secondary); font-weight: 500; }
+    .back-link:hover { color: var(--primary-color); }
+
+    /* The download button: the most visible element of the page. */
+    .cora-cta { display: flex; flex-direction: column; align-items: center; gap: 0.6rem; margin: 1.75rem 0 0.5rem; }
+    .cora-button {
+      display: inline-flex; align-items: center; gap: 0.7rem;
+      padding: 1rem 2.1rem; border-radius: 999px;
+      background: var(--primary-color); color: #fff !important;
+      font-size: 1.2rem; font-weight: 700; letter-spacing: 0.01em;
+      box-shadow: var(--shadow-lg); transition: var(--transition);
+    }
+    .cora-button:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: var(--shadow-xl); }
+    .cora-note { color: var(--text-secondary); font-size: 0.95rem; }
+
+    .fact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.9rem; margin: 1.5rem 0; }
+    .fact { background: var(--background-secondary); border: 1px solid var(--border-color); border-radius: var(--border-radius); padding: 0.9rem 1rem; text-align: center; }
+    .fact .num { display: block; font-size: 1.5rem; font-weight: 800; color: var(--text-primary); }
+    .fact .lbl { display: block; font-size: 0.85rem; color: var(--text-secondary); }
+
+    .site-card { border: 1px solid var(--border-color); border-radius: var(--border-radius-lg); overflow: hidden; margin-bottom: 2.5rem; background: var(--background-primary); box-shadow: var(--shadow-sm); }
+    .site-card .site-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); }
+    .site-card .site-photo { width: 100%; height: 100%; min-height: 220px; object-fit: cover; display: block; }
+    .site-card .site-text { padding: 1.5rem 1.75rem; }
+    .site-card .site-text h3 { margin-bottom: 0.4rem; }
+    .site-card .site-body { padding: 0 1.75rem 1.75rem; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.6rem 0 0.9rem; }
+    .tag-row .tag { background: var(--background-accent); color: var(--text-primary); font-weight: 500; }
+
+    .table-wrap { overflow-x: auto; margin: 0.75rem 0 1.25rem; }
+    .table-wrap table { width: 100%; font-size: 0.92rem; }
+    .table-wrap th { white-space: nowrap; }
+    .table-wrap td.num, .table-wrap th.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+    .media-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 0.75rem; }
+    .media-row.single { grid-template-columns: minmax(0, 420px); justify-content: center; }
+    .media-row figure { margin: 0; }
+    .media-row img, .media-row video { width: 100%; border-radius: var(--border-radius); border: 1px solid var(--border-color); background: #fff; display: block; }
+    .media-row figcaption { font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.35rem; text-align: center; }
+
+    .column { min-width: 0; }
+    .table-wrap code { white-space: normal; word-break: normal; }
+    @media (max-width: 768px) {
+      .table-wrap table { font-size: 0.8rem; }
+      .table-wrap th { white-space: normal; }
+      .table-wrap td, .table-wrap th { padding-left: 0.35em; padding-right: 0.35em; }
+      .site-card .site-head { grid-template-columns: 1fr; }
+      .site-card .site-photo { min-height: 180px; max-height: 240px; }
+      .site-card .site-text, .site-card .site-body { padding-left: 1rem; padding-right: 1rem; }
+      .cora-button { font-size: 1.05rem; padding: 0.9rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+<main id="main-content">
+
+  <!-- Header and download -->
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop has-text-centered">
+        <a class="back-link" href="index.html"><i class="fas fa-arrow-left"></i>&nbsp; Back to 3DGS-Matcher</a>
+        <h1 class="title is-1 publication-title">The TRIFFID aerial-ground dataset</h1>
+        <p class="subtitle is-5" style="color: var(--text-secondary); margin-top: 0.75rem;">
+          Ground sensor recordings and drone footage behind the real-data
+          experiments of 3DGS-Matcher
+        </p>
+
+        <div class="cora-cta">
+          <!-- TODO: replace CORA_URL with the dataset's CORA record (dataverse.csuc.cat) -->
+          <a class="cora-button" href="CORA_URL" target="_blank" rel="noopener">
+            <i class="fas fa-download"></i><span>Download from CORA</span>
+          </a>
+          <span class="cora-note">Hosted on CORA, the Catalan research data repository</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Description -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3 has-text-centered">Description</h2>
+          <div class="content has-text-justified">
+            <p>
+              The dataset was collected with two platforms. The ground platform is a handheld sensor box
+              with an Intel RealSense RGB camera, a Velodyne VLP-16 LiDAR, GNSS and an IMU. The aerial
+              platform is a DJI Mini 2 drone whose RGB camera records GNSS metadata. All ground sensor
+              streams are recorded as ROS2 Humble bags.
+            </p>
+            <p>
+              It covers indoor and outdoor captures at several test sites, including a farmhouse recorded
+              at different construction stages. Each ROS2 bag includes the sensor topics listed below, with
+              the publishing frequencies and image resolutions given for each site.
+            </p>
+          </div>
+
+          <div class="fact-grid">
+            <div class="fact"><span class="num">3</span><span class="lbl">test sites</span></div>
+            <div class="fact"><span class="num">18</span><span class="lbl">ROS2 bags</span></div>
+            <div class="fact"><span class="num">18</span><span class="lbl">4K drone videos</span></div>
+            <div class="fact"><span class="num">~185 GiB</span><span class="lbl">of ROS2 bags</span></div>
+          </div>
+
+          <h3 class="title is-5">Sensor topics</h3>
+          <div class="table-wrap">
+            <table class="table is-striped is-narrow is-hoverable">
+              <thead>
+                <tr><th>Topic</th><th class="num">FME / TestSite 1 (Hz)</th><th class="num">TestSite 2 (Hz)</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>/sensorbox/<wbr>velodyne_points</code></td><td class="num">~9.9</td><td class="num">~9.9</td></tr>
+                <tr><td><code>/sensorbox/<wbr>gnss/<wbr>tcpfix</code></td><td class="num">~1.1</td><td class="num">~1.0</td></tr>
+                <tr><td><code>/sensorbox/<wbr>audio/<wbr>audio</code></td><td class="num">~27.0</td><td class="num">&ndash;</td></tr>
+                <tr><td><code>/sensorbox/<wbr>camera/<wbr>camera/<wbr>color/<wbr>image_raw</code></td><td class="num">~29.1 @ 640&times;480 / 1280&times;720 (mixed)</td><td class="num">~29.3 @ 1280&times;720</td></tr>
+                <tr><td><code>/sensorbox/<wbr>camera/<wbr>camera/<wbr>gyro/<wbr>sample</code></td><td class="num">&ndash;</td><td class="num">~1955</td></tr>
+                <tr><td><code>/sensorbox/<wbr>camera/<wbr>camera/<wbr>accel/<wbr>sample</code></td><td class="num">&ndash;</td><td class="num">~249</td></tr>
+                <tr><td><code>/sensorbox/<wbr>imu/<wbr>bno055/<wbr>imu</code></td><td class="num">~9.4</td><td class="num">~52.6</td></tr>
+                <tr><td><code>/sensorbox/<wbr>imu/<wbr>bno055/<wbr>mag</code></td><td class="num">~9.4</td><td class="num">~52.6</td></tr>
+                <tr><td><code>/sensorbox/<wbr>imu/<wbr>bno055/<wbr>grav</code></td><td class="num">~9.4</td><td class="num">~52.6</td></tr>
+                <tr><td><code>/sensorbox/<wbr>imu/<wbr>bno055/<wbr>temp</code></td><td class="num">~9.4</td><td class="num">~52.6</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="cora-note">Every bag also carries <code>camera_info</code>, <code>imu_raw</code>, <code>calib_status</code>, <code>/tf_static</code> and <code>/rosout</code>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sites -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered" style="margin-bottom: 2rem;">Test sites</h2>
+
+      <!-- FME -->
+      <article class="site-card">
+        <div class="site-head">
+          <img class="site-photo" src="static/dataset/fme.png" alt="Aerial view of the FME building and its courtyard" loading="lazy">
+          <div class="site-text">
+            <h3 class="title is-4">FME</h3>
+            <div class="tag-row"><span class="tag">Ground sensor box</span><span class="tag">9 ROS2 bags</span></div>
+            <p>Contains only sensor box data (no drone).</p>
+          </div>
+        </div>
+        <div class="site-body">
+          <div class="table-wrap">
+            <table class="table is-striped is-narrow">
+              <thead><tr><th>Bag</th><th>Image resolution</th><th class="num">Size</th><th class="num">Duration</th><th class="num">Messages</th></tr></thead>
+              <tbody>
+                <tr><td>001</td><td>640&times;480</td><td class="num">230.9 MiB</td><td class="num">10.2 s</td><td class="num">1,014</td></tr>
+                <tr><td>002</td><td>640&times;480</td><td class="num">365.3 MiB</td><td class="num">16.7 s</td><td class="num">1,604</td></tr>
+                <tr><td>003</td><td>640&times;480</td><td class="num">12.2 GiB</td><td class="num">384.0 s</td><td class="num">45,707</td></tr>
+                <tr><td>004</td><td>1280&times;720</td><td class="num">20.3 GiB</td><td class="num">95.6 s</td><td class="num">43,410</td></tr>
+                <tr><td>005</td><td>1280&times;720</td><td class="num">5.7 GiB</td><td class="num">68.1 s</td><td class="num">20,619</td></tr>
+                <tr><td>006</td><td>1280&times;720</td><td class="num">1.1 GiB</td><td class="num">13.0 s</td><td class="num">4,330</td></tr>
+                <tr><td>007</td><td>no camera images</td><td class="num">3.5 GiB</td><td class="num">87.2 s</td><td class="num">400,084</td></tr>
+                <tr><td>008</td><td>1280&times;720</td><td class="num">30.9 GiB</td><td class="num">121.3 s</td><td class="num">541,534</td></tr>
+                <tr><td>009</td><td>1280&times;720</td><td class="num">2.1 GiB</td><td class="num">25.6 s</td><td class="num">8,626</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="media-row single">
+            <figure><img src="static/dataset/fme_traj_003.jpg" alt="Trajectory of FME bag 003" loading="lazy"><figcaption>Trajectory, bag 003 (m)</figcaption></figure>
+          </div>
+        </div>
+      </article>
+
+      <!-- TestSite 1 -->
+      <article class="site-card">
+        <div class="site-head">
+          <img class="site-photo" src="static/dataset/farmhouse.png" alt="The farmhouse test site" loading="lazy">
+          <div class="site-text">
+            <h3 class="title is-4">TestSite 1</h3>
+            <div class="tag-row"><span class="tag">Ground sensor box</span><span class="tag">Drone</span><span class="tag">Audio</span><span class="tag">6 ROS2 bags</span><span class="tag">9 drone videos</span></div>
+            <p>Includes drone and full ROS2 bag footage, plus microphone audio. The drone videos were recorded on 4 April 2025 at 3840&times;2160, each with its GPS track.</p>
+          </div>
+        </div>
+        <div class="site-body">
+          <div class="table-wrap">
+            <table class="table is-striped is-narrow">
+              <thead><tr><th>Bag</th><th>Image resolution</th><th class="num">Size</th><th class="num">Duration</th><th class="num">Messages</th></tr></thead>
+              <tbody>
+                <tr><td>001</td><td>640&times;480</td><td class="num">2.7 GiB</td><td class="num">87.8 s</td><td class="num">12,603</td></tr>
+                <tr><td>002</td><td>640&times;480</td><td class="num">11.5 GiB</td><td class="num">362.7 s</td><td class="num">53,444</td></tr>
+                <tr><td>003</td><td>640&times;480</td><td class="num">2.8 GiB</td><td class="num">89.9 s</td><td class="num">13,245</td></tr>
+                <tr><td>004</td><td>640&times;480</td><td class="num">9.5 GiB</td><td class="num">301.7 s</td><td class="num">43,861</td></tr>
+                <tr><td>005</td><td>640&times;480</td><td class="num">3.8 GiB</td><td class="num">119.2 s</td><td class="num">17,499</td></tr>
+                <tr><td>006</td><td>640&times;480</td><td class="num">5.7 GiB</td><td class="num">181.1 s</td><td class="num">26,691</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="media-row single">
+            <figure><video src="static/dataset/ts1_drone_002.mp4" autoplay muted loop playsinline preload="metadata"></video><figcaption>Drone video 002 (preview)</figcaption></figure>
+          </div>
+        </div>
+      </article>
+
+      <!-- TestSite 2 -->
+      <article class="site-card">
+        <div class="site-head">
+          <img class="site-photo" src="static/dataset/farmhouse.png" alt="The farmhouse test site" loading="lazy">
+          <div class="site-text">
+            <h3 class="title is-4">TestSite 2</h3>
+            <div class="tag-row"><span class="tag">Ground sensor box</span><span class="tag">Drone</span><span class="tag">3 ROS2 bags</span><span class="tag">9 drone videos</span></div>
+            <p>Similar to TestSite 1 but without audio, and with the camera's own gyroscope and accelerometer. The drone videos were recorded on 18 July 2025 at 3840&times;2160, each with its GPS track.</p>
+          </div>
+        </div>
+        <div class="site-body">
+          <div class="table-wrap">
+            <table class="table is-striped is-narrow">
+              <thead><tr><th>Bag</th><th>Image resolution</th><th class="num">Size</th><th class="num">Duration</th><th class="num">Messages</th></tr></thead>
+              <tbody>
+                <tr><td>001</td><td>1280&times;720</td><td class="num">6.3 GiB</td><td class="num">76.5 s</td><td class="num">193,868</td></tr>
+                <tr><td>002</td><td>1280&times;720</td><td class="num">34.1 GiB</td><td class="num">404.8 s</td><td class="num">1,051,587</td></tr>
+                <tr><td>003</td><td>1280&times;720</td><td class="num">32.0 GiB</td><td class="num">380.1 s</td><td class="num">987,205</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="media-row">
+            <figure><video src="static/dataset/ts2_drone_002.mp4" autoplay muted loop playsinline preload="metadata"></video><figcaption>Drone video 002 (preview)</figcaption></figure>
+            <figure><video src="static/dataset/ts2_handheld_002.mp4" autoplay muted loop playsinline preload="metadata"></video><figcaption>Sensor box camera, bag 002 (preview)</figcaption></figure>
+            <figure><img src="static/dataset/ts2_traj_002.jpg" alt="Trajectory of TestSite 2 bag 002" loading="lazy"><figcaption>Trajectory, bag 002 (m)</figcaption></figure>
+          </div>
+        </div>
+      </article>
+
+      <div class="cora-cta" style="margin-bottom: 1rem;">
+        <a class="cora-button" href="CORA_URL" target="_blank" rel="noopener">
+          <i class="fas fa-download"></i><span>Download the full dataset from CORA</span>
+        </a>
+        <span class="cora-note">The trained 3DGS maps used in the paper are available with the evaluation code.</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section hero is-light">
+    <div class="container is-max-desktop content has-text-centered">
+      <p>
+        If you use this dataset, please cite the 3DGS-Matcher paper (<a href="index.html#BibTeX">BibTeX</a>).
+        This work has been partially supported by the European Union's Horizon Europe research and
+        innovation programme under Grant Agreement No. 101168042 (TRIFFID), by the Spanish Ministry of
+        Science and Innovation through project CELINA (PID2025-176256NB-I00, funded by
+        MICIU/AEI/10.13039/501100011033), by the Generalitat de Catalunya through the Consolidated
+        Research Group RAIG (2021 SGR 00510), and by the University of Klagenfurt within the doctoral
+        school KPK-ForestScope.
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+            You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
