@@ -1,0 +1,76 @@
+# Build directories
+build/
+build_*/
+cmake-build-*/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Compiled Object files
+*.o
+*.obj
+*.so
+*.dylib
+*.dll
+
+# Executables
+*.out
+*.app
+*.exe
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake
+!CMakeLists.txt
+!cmake/*.cmake.in
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+
+# Data files (optional - uncomment if you don't want to track data)
+# *.splat
+# *.ply
+# *.pcd
+# data/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Experiment outputs (do not commit)
+ablation_plots/
+ablation_plots_fixed/
+ablation_results*.csv
+benchmark_results*.csv
+examples/ablation_results.csv
+
+# Local build artifacts in examples
+examples/lib3dgs_matcher.a
+examples/single_ablation
+examples/align_two_splats
+examples/benchmark_color_vs_vanilla
+examples/example_color_kiss_matcher
+examples/example_delta_e_splat_visualizer
+examples/test_color_splat
+
+# Local dataset files (keep only the canonical tracked sample)
+examples/splats/*
+!examples/splats/tramway.splat
+third_party/KISS-Matcher/
+third_party/small_gicp/
+
+# uv environment
+.venv/

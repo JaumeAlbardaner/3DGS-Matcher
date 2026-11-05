@@ -1,0 +1,23 @@
+[project]
+name = "3dgs-matcher"
+version = "1.0.0"
+description = "Color-centric registration of 3D Gaussian Splatting maps (IEEE RA-L 2026)"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.9"
+# Build tools for the C++ CLI, so no conda environment is needed. cmake < 4
+# matches the conda setup (KISS-Matcher declares an old minimum CMake version).
+dependencies = [
+    "cmake>=3.16,<4",
+    "tbb-devel>=2021.10",
+]
+
+[project.scripts]
+align_two_splats = "gs3d_matcher_cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["gs3d_matcher_cli"]
